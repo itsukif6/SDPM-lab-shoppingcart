@@ -119,6 +119,43 @@ class TestShoppingCart(unittest.TestCase):
     #     sys.stdout = sys.__stdout__
 
     #     self.assertEqual(actual_output, expected_output)
+    
+    # 移除存在的 
+    def test_remove_existing_item(self):
+        # 加入商品到購物車
+        self.cart.add_to_cart(1)
+        self.cart.add_to_cart(2)
+        
+        # 檢查購物車內是否有兩個商品
+        self.assertEqual(len(self.cart.shopping_cart), 2)
+
+        # 移除其中一個商品
+        self.cart.remove_from_cart(1)
+        
+        # 驗證購物車內商品數量是否正確
+        self.assertEqual(len(self.cart.shopping_cart), 1)
+        # 驗證剩下的商品是否正確
+        self.assertEqual(self.cart.shopping_cart[0]['id'], 2)
+
+    # 移除不存在的 
+    def test_remove_non_existing_item(self):
+        # 加入商品到購物車
+        self.cart.add_to_cart(1)
+        
+        # 嘗試移除不存在於購物車的商品
+        self.cart.remove_from_cart(999)
+        
+        # 驗證購物車內容未改變
+        self.assertEqual(len(self.cart.shopping_cart), 1)
+        self.assertEqual(self.cart.shopping_cart[0]['id'], 1)
+
+    # 移除空的 
+    def test_remove_item_from_empty_cart(self):
+        # 嘗試從空的購物車移除商品
+        self.cart.remove_from_cart(1)
+        
+        # 驗證購物車仍然是空的
+        self.assertEqual(len(self.cart.shopping_cart), 0)
 
 if __name__ == '__main__':
     unittest.main()
